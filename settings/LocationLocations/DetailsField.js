@@ -2,18 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@folio/stripes-components/lib/TextField';
 import RepeatableField from '@folio/stripes-components/lib/RepeatableField';
+import AutoComplete from '@folio/stripes-components/lib/AutoComplete';
 
 class DetailsField extends React.Component {
   static manifest = {
-    searchTerm: '',
     locations: {
       type: 'okapi',
-      path: 'locations?query=(details=%{searchTerm.searchTerm}*)',
+      path: 'locations?query=(details=*)',
     },
   };
 
   static propTypes = {
-    searchTerm: PropTypes.string,
     translate: PropTypes.func,
     resources: PropTypes.shape({
       locations: PropTypes.shape({
@@ -21,16 +20,12 @@ class DetailsField extends React.Component {
       }),
     }).isRequired,
     mutator: PropTypes.shape({
-      searchTerm: PropTypes.shape({
-        replace: PropTypes.func,
-      }),
     }).isRequired,
   };
 
   constructor(props) {
     super(props);
     this.getSuggestedTerms = this.getSuggestedTerms.bind(this);
-    this.handleChange = this.handleChange.bind(this);
   }
 
   getSuggestedTerms(locationsArray) {
@@ -43,15 +38,13 @@ class DetailsField extends React.Component {
     return terms;
   }
 
-  handleChange(e) {
-    this.props.mutator.searchTerm.replace({ searchTerm: e.target.value });
-  }
-
   render() {
     const { locations } = this.props.resources;
-    const locationsArray = locations.records[0] ? locations.records[0].locations : [];
-    // eslint-disable-next-line no-unused-vars
+    const locationsArray = locations ? locations.records[0] ? locations.records[0].locations : [] : [];
     const suggestedTerms = this.getSuggestedTerms(locationsArray);
+    const detailNames = suggestedTerms.length > 0 ? suggestedTerms.map(locationName => (
+      { value: locationName })) : [];
+
     return (
       <RepeatableField
         name="detailsArray"
@@ -61,9 +54,9 @@ class DetailsField extends React.Component {
           {
             name: 'name',
             label: this.props.translate('locations.detailsName'),
-            component: TextField,
-            onChange: this.handleChange,
+            component: AutoComplete,
             required: true,
+            suggestions: detailNames,
           },
           {
             name: 'value',
