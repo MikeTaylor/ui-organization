@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@folio/stripes-components/lib/TextField';
 import RepeatableField from '@folio/stripes-components/lib/RepeatableField';
-import AutoComplete from '@folio/stripes-components/lib/AutoComplete';
+import AutoSuggest from '../../util/AutoSuggest';
 
 class DetailsField extends React.Component {
   static manifest = {
@@ -18,8 +18,6 @@ class DetailsField extends React.Component {
       locations: PropTypes.shape({
         records: PropTypes.arrayOf(PropTypes.object),
       }),
-    }).isRequired,
-    mutator: PropTypes.shape({
     }).isRequired,
   };
 
@@ -54,9 +52,9 @@ class DetailsField extends React.Component {
           {
             name: 'name',
             label: this.props.translate('locations.detailsName'),
-            component: AutoComplete,
+            component: AutoSuggest,
             required: true,
-            suggestions: detailNames,
+            items: detailNames,
           },
           {
             name: 'value',
