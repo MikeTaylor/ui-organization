@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@folio/stripes-components/lib/TextField';
 import RepeatableField from '@folio/stripes-components/lib/RepeatableField';
-import AutoSuggest from '../../util/AutoSuggest';
+import AutoSuggest from '../../lib/AutoSuggest';
 
 class DetailsField extends React.Component {
   static manifest = {
