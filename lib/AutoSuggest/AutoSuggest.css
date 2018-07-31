@@ -1,6 +1,7 @@
 .AutoSuggest {
   position: relative;
   top: 100%;
+  width: '100%';
   right: 0;
   padding: 0;
   z-index: 1000;
@@ -12,11 +13,6 @@
   background-clip: padding-box;
   border-radius: 4px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-
-  & ul {
-    list-style: none;
-    padding: 0;
-  }
 }
 
 .textFieldDiv {
