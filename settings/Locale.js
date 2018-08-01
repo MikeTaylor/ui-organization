@@ -62,7 +62,11 @@ class Locale extends React.Component {
     const localeValues = JSON.parse(setting.value);
     const { locale, timezone } = localeValues;
     setTimeout(() => {
-      if (locale) this.props.stripes.setLocale(locale);
+      if (locale) {
+        this.props.stripes.setLocale(locale);
+        // update lang attribute on html tag.
+        document.documentElement.setAttribute('lang', locale.substr(0, 2));
+      }
       if (timezone) this.props.stripes.setTimezone(timezone);
     }, 2000);
   }
