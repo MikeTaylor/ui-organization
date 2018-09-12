@@ -1,5 +1,9 @@
 # Change history for ui-organization
 
+## 2.4.0 (IN PROGRESS)
+
+* Provide default `isActive` value for new locations. Fixes UIORG-109.
+* Add permission for service points. Fixes UIORG-106.
 
 ## [2.3.1](https://github.com/folio-org/ui-organization/tree/v2.3.1) (2017-09-14)
 [Full Changelog](https://github.com/folio-org/ui-organization/compare/v2.3.0...v2.3.1)
