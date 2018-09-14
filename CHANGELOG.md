@@ -1,7 +1,8 @@
 # Change history for ui-organization
 
 
-## 2.4.0 (IN PROGRESS)
+## [2.3.1](https://github.com/folio-org/ui-organization/tree/v2.3.1) (2017-09-14)
+[Full Changelog](https://github.com/folio-org/ui-organization/compare/v2.3.0...v2.3.1)
 
 * Update to stripes-form 0.9.0. Refs STRIPES-556.
 
