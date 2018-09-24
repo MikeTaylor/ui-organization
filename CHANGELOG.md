@@ -1,6 +1,7 @@
 # Change history for ui-organization
 
-## 2.3.3 (IN PROGRESS)
+## [2.3.3](https://github.com/folio-org/ui-organization/tree/v2.3.3) (2017-09-24)
+[Full Changelog](https://github.com/folio-org/ui-organization/compare/v2.3.2...v2.3.3)
 
 * Expose Portuguese as a localization option. Fixes UIORG-113.
 
