@@ -149,39 +149,6 @@ class LocationList extends React.Component {
         onToggle={onToggle}
         label={this.translate('assignedLocations')}
       >
-        {
-          <Row>
-            <Col xs={8}>
-              <Row>
-                <Col xs={6}>
-                  <Field
-                    label={this.translate('location')}
-                    placeholder={this.translate('selectLocation')}
-                    name="location"
-                    id="location"
-                    component={LocationSelection}
-                    fullWidth
-                    marginBottom0
-                    onSelect={loc => this.selectLocation(loc)}
-                  />
-                  <LocationLookup onLocationSelected={loc => this.selectLocation(loc, true)} />
-                </Col>
-                <Col xs={2}>
-                  <br />
-                  <Button
-                    id="clickable-add-location"
-                    title={this.translate('addLocation')}
-                    onClick={this.addLocation}
-                    marginBottom0
-                  >
-                    {this.translate('addLocation')}
-                  </Button>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-        }
-
         <Row>
           <Col xs={8}>
             <FieldArray name="locationIds" component={this.renderLocations} />
