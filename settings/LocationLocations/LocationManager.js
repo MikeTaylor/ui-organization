@@ -1,9 +1,8 @@
-import { sortBy } from 'lodash';
+import { sortBy, cloneDeep } from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { EntryManager } from '@folio/stripes/smart-components';
-import { Select } from '@folio/stripes/components';
-import { Button, Col, Headline, Row } from '@folio/stripes-components';
+import { Select, Button, Col, Headline, Row } from '@folio/stripes/components';
 import { FormattedMessage } from 'react-intl';
 
 import LocationDetail from './LocationDetail';
@@ -57,6 +56,12 @@ class LocationManager extends React.Component {
       records: 'loclibs',
       accumulate: true,
     },
+    servicePoints: {
+      type: 'okapi',
+      records: 'servicepoints',
+      path: 'service-points',
+      resourceShouldRefresh: true,
+    },
     holdingsEntries: {
       type: 'okapi',
       path: 'holdings-storage/holdings',
@@ -78,6 +83,9 @@ class LocationManager extends React.Component {
       entries: PropTypes.shape({
         records: PropTypes.arrayOf(PropTypes.object),
       }),
+      servicePoints: PropTypes.shape({
+        records: PropTypes.arrayOf(PropTypes.object),
+      }),
       institutions: PropTypes.shape({
         records: PropTypes.arrayOf(PropTypes.object),
       }),
@@ -90,6 +98,11 @@ class LocationManager extends React.Component {
     }).isRequired,
     mutator: PropTypes.shape({
       entries: PropTypes.shape({
+        POST: PropTypes.func,
+        PUT: PropTypes.func,
+        DELETE: PropTypes.func,
+      }),
+      servicePoints: PropTypes.shape({
         POST: PropTypes.func,
         PUT: PropTypes.func,
         DELETE: PropTypes.func,
@@ -135,7 +148,21 @@ class LocationManager extends React.Component {
       institutionId: null,
       campusId: null,
       libraryId: null,
+      servicePointsMap: {},
     };
+  }
+
+  static getDerivedStateFromProps(nextProps) {
+    const { resources } = nextProps;
+
+    if (resources.servicePoints && resources.servicePoints.hasLoaded) {
+      const servicePointsMap = ((resources.servicePoints || {}).records || []).reduce((map, item) => {
+        map[item.id] = item.name;
+        return map;
+      }, {});
+      return { servicePointsMap };
+    }
+    return null;
   }
 
   /**
@@ -188,6 +215,20 @@ class LocationManager extends React.Component {
 
       if (detailsErrors.length) {
         errors.detailsArray = detailsErrors;
+      }
+    }
+
+    const servicePointErrors = [];
+    if (values.servicePointIds) {
+      values.servicePointIds.forEach((entry, i) => {
+        const servicePointError = {};
+        if (!entry || !entry.selectSP) {
+          servicePointError.selectSP = this.props.stripes.intl.formatMessage({ id: 'stripes-core.label.missingRequiredField' });
+          servicePointErrors[i] = servicePointError;
+        }
+      });
+      if (servicePointErrors.length) {
+        errors.servicePointIds = servicePointErrors;
       }
     }
 
@@ -309,16 +350,25 @@ class LocationManager extends React.Component {
 
   render() {
     const { institutionId, campusId, libraryId } = this.state;
+    const { resources } = this.props;
+
+    const locations = cloneDeep((resources.entries || {}).records || []).map((location) => {
+      location.servicePointIds = (location.servicePointIds || []).map(id => ({
+        selectSP: this.state.servicePointsMap[id],
+        primary: (location.primaryServicePoint === id),
+      }));
+      return location;
+    });
 
     return (
       <EntryManager
         stripes={this.props.stripes}
-        defaultEntry={{ isActive: true, institutionId, campusId, libraryId }}
+        defaultEntry={{ isActive: true, institutionId, campusId, libraryId, servicePointIds: [{ selectSP: '', primary: true }] }}
         clonable
         addMenu={(<div />)}
         parentMutator={this.props.mutator}
         locationResources={this.props.resources}
-        entryList={sortBy((this.props.resources.entries || {}).records || [], ['name'])}
+        entryList={sortBy(locations, ['name'])}
         detailComponent={this.connectedLocationDetail}
         paneTitle={this.props.label}
         entryLabel={this.translate('locations.location')}
