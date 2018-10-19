@@ -112,7 +112,7 @@ class LocationForm extends React.Component {
     });
 
     data.servicePointIds.forEach((item) => {
-      if (item.primary === true) servicePointsObject.primaryServicePoint = servicePointsMap[item.selectSP];
+      if (item.primary) servicePointsObject.primaryServicePoint = servicePointsMap[item.selectSP];
     });
 
     const detailsObject = {};
