@@ -52,6 +52,7 @@ class LocationForm extends React.Component {
     onCancel: PropTypes.func,
     onRemove: PropTypes.func,
     pristine: PropTypes.bool,
+    servicePointsByName: PropTypes.object,
     submitting: PropTypes.bool,
     cloning: PropTypes.bool,
     change: PropTypes.func.isRequired,
@@ -95,24 +96,16 @@ class LocationForm extends React.Component {
   }
 
   save(data) {
-    const { cloning, locationResources } = this.props;
+    const { cloning } = this.props;
     if (cloning) this.validateCloning(data);
     // massage the "details" property which is represented in the API as
     // an object but on the form as an array of key-value pairs
     const servicePointsObject = {};
 
-    const servicePointsMap = ((locationResources.servicePoints || {}).records || []).reduce((map, item) => {
-      map[item.name] = item.id;
-      return map;
-    }, {});
-
     servicePointsObject.servicePointIds = [];
     data.servicePointIds.forEach((item) => {
-      servicePointsObject.servicePointIds.push(servicePointsMap[item.selectSP]);
-    });
-
-    data.servicePointIds.forEach((item) => {
-      if (item.primary) servicePointsObject.primaryServicePoint = servicePointsMap[item.selectSP];
+      servicePointsObject.servicePointIds.push(this.props.servicePointsByName[item.selectSP]);
+      if (item.primary) servicePointsObject.primaryServicePoint = this.props.servicePointsByName[item.selectSP];
     });
 
     const detailsObject = {};

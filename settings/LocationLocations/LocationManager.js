@@ -148,19 +148,21 @@ class LocationManager extends React.Component {
       institutionId: null,
       campusId: null,
       libraryId: null,
-      servicePointsMap: {},
+      servicePointsById: {},
+      servicePointsByName: {}
     };
   }
 
   static getDerivedStateFromProps(nextProps) {
     const { resources } = nextProps;
-
+    const servicePointsByName = {};
     if (resources.servicePoints && resources.servicePoints.hasLoaded) {
-      const servicePointsMap = ((resources.servicePoints || {}).records || []).reduce((map, item) => {
+      const servicePointsById = ((resources.servicePoints || {}).records || []).reduce((map, item) => {
         map[item.id] = item.name;
+        servicePointsByName[item.name] = item.id;
         return map;
       }, {});
-      return { servicePointsMap };
+      return { servicePointsById, servicePointsByName };
     }
     return null;
   }
@@ -354,7 +356,7 @@ class LocationManager extends React.Component {
 
     const locations = cloneDeep((resources.entries || {}).records || []).map((location) => {
       location.servicePointIds = (location.servicePointIds || []).map(id => ({
-        selectSP: this.state.servicePointsMap[id],
+        selectSP: this.state.servicePointsById[id],
         primary: (location.primaryServicePoint === id),
       }));
       return location;
@@ -371,6 +373,8 @@ class LocationManager extends React.Component {
         entryList={sortBy(locations, ['name'])}
         detailComponent={this.connectedLocationDetail}
         paneTitle={this.props.label}
+        servicePointsByName={this.state.servicePointsByName}
+        servicePointsById={this.state.servicePointsById}
         entryLabel={this.translate('locations.location')}
         entryFormComponent={LocationForm}
         validate={this.validate}

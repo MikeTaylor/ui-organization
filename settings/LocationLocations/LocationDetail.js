@@ -1,4 +1,4 @@
-import { cloneDeep, get } from 'lodash';
+import { cloneDeep, get, isEmpty } from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -27,10 +27,6 @@ class LocationDetail extends React.Component {
       type: 'okapi',
       path: 'location-units/libraries/!{initialValues.libraryId}',
     },
-    servicePoints: {
-      type: 'okapi',
-      path: 'service-points',
-    },
   });
 
   static propTypes = {
@@ -44,6 +40,7 @@ class LocationDetail extends React.Component {
       campuses: PropTypes.object,
       libraries: PropTypes.object,
     }).isRequired,
+    servicePointsById: PropTypes.object,
   };
 
   constructor(props) {
@@ -93,15 +90,11 @@ class LocationDetail extends React.Component {
   }
 
   renderServicePoints() {
-    const { initialValues: loc, resources: { servicePoints } } = this.props;
-    const servicePointsMap = (servicePoints && servicePoints.hasLoaded) ? ((servicePoints || {}).records || [])[0].servicepoints.reduce((map, item) => {
-      map[item.id] = item.name;
-      return map;
-    }, {}) : {};
+    const { initialValues: loc, servicePointsById } = this.props;
 
     const itemsList = [];
-    // as primary servicePoint surely exists and its index would be at the oth position of itemsList array
-    if (servicePointsMap) itemsList.push(servicePointsMap[loc.primaryServicePoint]);
+    // as primary servicePoint surely exists and its index would be at the 0th position of itemsList array
+    if (!isEmpty(servicePointsById)) itemsList.push(servicePointsById[loc.primaryServicePoint]);
     if (loc.servicePointIds.length !== 0) {
       loc.servicePointIds.forEach((item) => {
         // exclude the primary servicepoint from being added again into the array
