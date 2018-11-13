@@ -190,7 +190,8 @@ module.exports.test = function locationTest(uiTestCtx) {
             console.error('Could not find new location: ', error);
           });
       });
-/*
+
+      /*
       it(`should fail to delete institution "${institutionName}"`, (done) => {
         nightmare
           .click(config.select.settings)
