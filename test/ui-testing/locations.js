@@ -2,7 +2,6 @@
 /* global it describe Nightmare before after */
 module.exports.test = function locationTest(uiTestCtx) {
   describe('Module test: organization:locations', function meh() {
-
     // what the ...? I THOUGHT WE WERE GETTING RID OF TIMERS??!!!?!111
     // yeah, well, there's something funky related to removing the
     // location values that doesn't work without waiting. I think, maybe,
