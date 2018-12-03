@@ -93,7 +93,12 @@ class LocationLibraries extends React.Component {
   render() {
     const institutions = [];
     (((this.props.resources.institutions || {}).records || []).forEach(i => {
-      institutions.push({ value: i.id, label: `${i.name}${i.code ? ` (${i.code})` : ''}` });
+      institutions.push(
+        <option value={i.id} key={i.id}>
+          {i.name}
+          {i.code ? ` (${i.code})` : ''}
+        </option>
+      );
     }));
 
     if (!institutions.length) {
@@ -101,11 +106,14 @@ class LocationLibraries extends React.Component {
     }
 
     const campuses = [];
-    ((this.props.resources.campuses || {}).records || []).forEach(i => {
-      if (i.institutionId === this.state.institutionId) {
-        campuses.push({ value: i.id, label: `${i.name}${i.code ? ` (${i.code})` : ''}` });
-      }
-    });
+    (((this.props.resources.campuses || {}).records || []).forEach(i => {
+      campuses.push(
+        <option value={i.id} key={i.id}>
+          {i.name}
+          {i.code ? ` (${i.code})` : ''}
+        </option>
+      );
+    }));
 
     const formatter = {
       numberOfObjects: this.numberOfObjectsFormatter,
@@ -113,26 +121,34 @@ class LocationLibraries extends React.Component {
 
     const filterBlock = (
       <div>
-        <Select
-          label={<FormattedMessage id="ui-organization.settings.location.institutions.institution" />}
-          id="institutionSelect"
-          name="institutionSelect"
-          dataOptions={[
-            { label: <FormattedMessage id="ui-organization.settings.location.institutions.selectInstitution" />, value: '' },
-            ...institutions
-          ]}
-          onChange={this.onChangeInstitution}
-        />
-        {this.state.institutionId && <Select
-          label={<FormattedMessage id="ui-organization.settings.location.campuses.campus" />}
-          id="campusSelect"
-          name="campusSelect"
-          dataOptions={[
-            { label: <FormattedMessage id="ui-organization.settings.location.campuses.selectCampus" />, value: '' },
-            ...campuses
-          ]}
-          onChange={this.onChangeCampus}
-        />}
+        <FormattedMessage id="ui-organization.settings.location.institutions.selectInstitution">
+          {selectText => (
+            <Select
+              label={<FormattedMessage id="ui-organization.settings.location.institutions.institution" />}
+              id="institutionSelect"
+              name="institutionSelect"
+              onChange={this.onChangeInstitution}
+            >
+              <option>{selectText}</option>
+              {institutions}
+            </Select>
+          )}
+        </FormattedMessage>
+        {this.state.institutionId &&
+          <FormattedMessage id="ui-organization.settings.location.campuses.selectCampus">
+            {selectText => (
+              <Select
+                label={<FormattedMessage id="ui-organization.settings.location.campuses.campus" />}
+                id="campusSelect"
+                name="campusSelect"
+                onChange={this.onChangeCampus}
+              >
+                <option>{selectText}</option>
+                {campuses}
+              </Select>
+            )}
+          </FormattedMessage>
+        }
       </div>
     );
 
