@@ -95,19 +95,19 @@ class LocationCampuses extends React.Component {
     }
 
     const rowFilter = (
-      <FormattedMessage id="ui-organization.settings.location.institutions.selectInstitution">
-        {selectText => (
-          <Select
-            label={<FormattedMessage id="ui-organization.settings.location.institutions.institution" />}
-            id="institutionSelect"
-            name="institutionSelect"
-            onChange={this.onChangeInstitution}
-          >
+      <Select
+        label={<FormattedMessage id="ui-organization.settings.location.institutions.institution" />}
+        id="institutionSelect"
+        name="institutionSelect"
+        onChange={this.onChangeInstitution}
+      >
+        <FormattedMessage id="ui-organization.settings.location.institutions.selectInstitution">
+          {selectText => (
             <option>{selectText}</option>
-            {institutions}
-          </Select>
-        )}
-      </FormattedMessage>
+          )}
+        </FormattedMessage>
+        {institutions}
+      </Select>
     );
 
     return (

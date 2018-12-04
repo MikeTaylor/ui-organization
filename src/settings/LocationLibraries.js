@@ -120,36 +120,36 @@ class LocationLibraries extends React.Component {
     };
 
     const filterBlock = (
-      <div>
-        <FormattedMessage id="ui-organization.settings.location.institutions.selectInstitution">
-          {selectText => (
-            <Select
-              label={<FormattedMessage id="ui-organization.settings.location.institutions.institution" />}
-              id="institutionSelect"
-              name="institutionSelect"
-              onChange={this.onChangeInstitution}
-            >
-              <option>{selectText}</option>
-              {institutions}
-            </Select>
-          )}
-        </FormattedMessage>
-        {this.state.institutionId &&
-          <FormattedMessage id="ui-organization.settings.location.campuses.selectCampus">
+      <React.Fragment>
+        <Select
+          label={<FormattedMessage id="ui-organization.settings.location.institutions.institution" />}
+          id="institutionSelect"
+          name="institutionSelect"
+          onChange={this.onChangeInstitution}
+        >
+          <FormattedMessage id="ui-organization.settings.location.institutions.selectInstitution">
             {selectText => (
-              <Select
-                label={<FormattedMessage id="ui-organization.settings.location.campuses.campus" />}
-                id="campusSelect"
-                name="campusSelect"
-                onChange={this.onChangeCampus}
-              >
-                <option>{selectText}</option>
-                {campuses}
-              </Select>
+              <option>{selectText}</option>
             )}
           </FormattedMessage>
+          {institutions}
+        </Select>
+        {this.state.institutionId &&
+          <Select
+            label={<FormattedMessage id="ui-organization.settings.location.campuses.campus" />}
+            id="campusSelect"
+            name="campusSelect"
+            onChange={this.onChangeCampus}
+          >
+            <FormattedMessage id="ui-organization.settings.location.campuses.selectCampus">
+              {selectText => (
+                <option>{selectText}</option>
+              )}
+            </FormattedMessage>
+            {campuses}
+          </Select>
         }
-      </div>
+      </React.Fragment>
     );
 
     return (
