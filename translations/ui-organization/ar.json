@@ -90,7 +90,18 @@
     "settings.location.locations.primary": "الرئيسي",
     "settings.servicePoints.disallowDeleteServicePoint": "Cannot delete service point",
     "settings.servicePoints.disallowDeleteServicePointMessage": "This service point cannot be deleted, as it is primary service point for one or more locations.",
-    "settings.servicePoints.ok": "Okay",
+    "settings.servicePoints.ok": "موافق",
     "settings.servicePoints.deleteServicePointWithLocsMessage": "<strong>{name} is associated with one or more locations</strong>. Are you sure you want to remove <strong>{name}?</strong>",
-    "settings.servicePoints.primary": "primary"
+    "settings.servicePoints.primary": "الرئيسي",
+    "settings.servicePoint.expirationPeriod": "فترة صلاحية الحجز ",
+    "settings.servicePoint.selectInterval": "تحديد الفاصل الزمني",
+    "settings.validate.greaterThanOne": "يجب أن تكون القيمة عددًا صحيحًا أكبر من 1",
+    "settings.servicePoints.printByDefault": "Print by default",
+    "settings.servicePoints.printSlip.yes": "{name} - yes",
+    "settings.servicePoints.printSlip.no": "{name} - no",
+    "settings.intervalPeriod.minutes": "Minutes",
+    "settings.intervalPeriod.hours": "Hours",
+    "settings.intervalPeriod.days": "Days",
+    "settings.intervalPeriod.weeks": "Weeks",
+    "settings.intervalPeriod.months": "Months"
 }
