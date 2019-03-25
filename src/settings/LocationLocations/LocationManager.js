@@ -62,7 +62,7 @@ class LocationManager extends React.Component {
       path: 'service-points',
       params: {
         query: 'cql.allRecords=1 sortby name',
-        limit: '100',
+        limit: '500',
       },
       resourceShouldRefresh: true,
     },
